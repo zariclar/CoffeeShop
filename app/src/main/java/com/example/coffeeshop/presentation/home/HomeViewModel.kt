@@ -4,6 +4,8 @@ import android.content.Context
 import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.coffeeshop.MyApplication
+import com.example.coffeeshop.data.local.SharedPrefsHelper
 import com.example.coffeeshop.data.local.entity.Category
 import com.example.coffeeshop.data.local.entity.Favorite
 import com.example.coffeeshop.data.local.entity.Product
@@ -36,7 +38,9 @@ class HomeViewModel @Inject constructor(
         val cartProductIds = mutableListOf<Long>()
 
         // For demo purpose, using a static user ID (in real app, this would come from user authentication)
-        const val CURRENT_USER_ID = "mustafa@zariclar.com"
+        val sharedPrefs = SharedPrefsHelper(MyApplication.getContext())
+
+        val CURRENT_USER_ID = sharedPrefs.getUserId()!!
     }
 
     // Initialize ViewModel

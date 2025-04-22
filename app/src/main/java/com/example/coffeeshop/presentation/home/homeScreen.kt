@@ -156,7 +156,7 @@ fun SearchBar(
                         contentDescription = "Search",
                         tint = Color.Gray
                     )
-                    Text("Search coffee", color = Color.Gray)
+                    Text("Ürün Arayın", color = Color.Gray)
                 }
             },
             colors = TextFieldDefaults.colors(

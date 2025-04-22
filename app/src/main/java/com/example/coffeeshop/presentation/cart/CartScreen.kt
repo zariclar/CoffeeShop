@@ -60,7 +60,7 @@ fun CartScreen(
                     .padding(16.dp)
             ) {
 
-                Text(text = "Cart", fontSize = 20.sp, fontWeight = FontWeight.Bold)
+                Text(text = "Sepet", fontSize = 20.sp, fontWeight = FontWeight.Bold)
             }
 
             // Loading state
@@ -292,7 +292,7 @@ fun CheckoutSection(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = "Total: $${String.format("%.2f", total)}",
+                text = "Toplam: ${String.format("%.2f", total)} TRY",
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold
             )
