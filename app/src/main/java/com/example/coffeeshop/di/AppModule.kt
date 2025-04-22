@@ -6,10 +6,12 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import com.example.coffeeshop.data.local.AppDatabase
 import com.example.coffeeshop.data.local.SharedPrefsHelper
 import com.example.coffeeshop.data.local.dao.CategoryDao
+import com.example.coffeeshop.data.local.dao.FavoriteDao
 import com.example.coffeeshop.data.local.dao.ProductDao
 import com.example.coffeeshop.data.local.dao.UserDao
 import com.example.coffeeshop.data.local.entity.Category
 import com.example.coffeeshop.data.local.entity.Product
+import com.example.coffeeshop.data.repository.FavoriteRepository
 import com.example.coffeeshop.data.repository.UserRepository
 import dagger.Module
 import dagger.Provides
@@ -108,6 +110,12 @@ object AppModule {
     fun provideCategoryDao(database: AppDatabase): CategoryDao {
         return database.categoryDao()
     }
+    @Provides
+    fun provideFavoriteDao(database: AppDatabase): FavoriteDao {
+        return database.favoriteDao()
+    }
+    @Provides
+    fun provideFavoriteRepository(favoriteDao: FavoriteDao): FavoriteRepository = FavoriteRepository(favoriteDao)
 
     @Provides
     fun provideSharedPrefsHelper(@ApplicationContext context: Context): SharedPrefsHelper {
