@@ -5,24 +5,42 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.coffeeshop.MyApplication
+import com.example.coffeeshop.data.local.SharedPrefsHelper
 import com.example.coffeeshop.data.local.entity.Product
 import com.example.coffeeshop.data.repository.ProductRepository
+import com.example.coffeeshop.data.repository.UserRepository
 import com.example.coffeeshop.presentation.home.HomeViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import okhttp3.Call
+import okhttp3.Callback
+import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
+import okhttp3.Response
+import org.json.JSONArray
+import org.json.JSONObject
+import java.io.IOException
 import javax.inject.Inject
 
 @HiltViewModel
 class CartViewModel @Inject constructor(
-    private val productRepository: ProductRepository
+    private val productRepository: ProductRepository,
+    private val userRepository: UserRepository
 ) : ViewModel() {
 
     // Cart UI state
     private val _uiState = MutableStateFlow(CartUiState())
     val uiState = _uiState.asStateFlow()
+    var totalAmount = 0.0
 
     // Message to display (snackbar/toast)
     var message by mutableStateOf<String?>(null)
@@ -48,7 +66,7 @@ class CartViewModel @Inject constructor(
                 }
 
                 val cartItems = mutableListOf<CartItem>()
-                var totalAmount = 0.0
+                totalAmount = 0.0
 
                 // Load each unique product with its count
                 productCountMap.forEach { (productId, count) ->
@@ -159,6 +177,21 @@ class CartViewModel @Inject constructor(
 
     // Process checkout
     fun checkout() {
+        val sharedPrefs = SharedPrefsHelper(MyApplication.getContext())
+
+
+        sendOrder(
+            email =  sharedPrefs.getUserId()!!,
+            totalAmount = totalAmount,
+            onSuccess = {
+                // Başarılıysa UI güncellemesi vs.
+            },
+            onError = { err ->
+                // Hata mesajı göster
+
+            }
+        )
+
         // Clear cart
         HomeViewModel.cartProductIds.clear()
 
@@ -198,4 +231,47 @@ class CartViewModel @Inject constructor(
         val product: Product,
         val quantity: Int
     )
+
+    fun sendOrder(
+        email: String,
+        totalAmount: Double,
+        onSuccess: () -> Unit = {},
+        onError: (Throwable) -> Unit = {}
+    ) {
+
+        val client = OkHttpClient()
+        // JSON objesini oluştur
+        val json = JSONObject().apply {
+            put("email", email)
+            put("productIds", JSONArray(HomeViewModel.cartProductIds))
+            put("totalAmount", totalAmount)
+        }
+
+        // RequestBody hazırla
+        val mediaType = "application/json; charset=utf-8".toMediaType()
+        val body = json.toString().toRequestBody(mediaType)
+
+        // POST isteğini hazırla (URL’i kendi API’n ile değiştir)
+        val request = Request.Builder()
+            .url("https://webhook.site/3ae00c13-668e-46db-a524-ee3cc18f25f9")
+            .post(body)
+            .build()
+
+        // Asenkron çağrı
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                onError(e)
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                if (response.isSuccessful) {
+                    onSuccess()
+                } else {
+                    onError(IOException("HTTP ${response.code}: ${response.message}"))
+                }
+                response.close()
+            }
+        })
+    }
 }
+
