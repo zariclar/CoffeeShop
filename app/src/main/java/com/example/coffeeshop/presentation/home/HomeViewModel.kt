@@ -49,7 +49,7 @@ class HomeViewModel @Inject constructor(
                 _uiState.update { currentState ->
                     currentState.copy(
                         categories = categories,
-                        selectedCategoryId = categories.firstOrNull()?.categoryId ?: -1
+                        selectedCategoryId = -1
                     )
                 }
             } catch (e: Exception) {

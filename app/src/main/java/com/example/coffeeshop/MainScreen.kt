@@ -2,6 +2,7 @@ package com.example.coffeeshop
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
@@ -29,8 +30,8 @@ fun MainScreen() {
         bottomBar = { BottomBar(navController) },
 
     ) {
-        it
-        NavHost(navController, startDestination = "home") {
+        paddingValues ->
+        NavHost(navController, startDestination = "home",modifier = Modifier.padding(paddingValues)) {
             composable("home") { HomeScreen() }
             composable("favorites") { FavoritesScreen() }
             composable("cart") { CartScreen() }
