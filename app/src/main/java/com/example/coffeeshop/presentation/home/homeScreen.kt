@@ -1,5 +1,6 @@
 package com.example.coffeeshop.presentation.home
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
@@ -203,7 +204,15 @@ fun PromoBanner() {
             modifier = Modifier
                 .fillMaxSize()
                 .background(Color.Black.copy(alpha = 0.2f))
-        )
+
+        ){
+            Image(
+                painter = painterResource(id = R.drawable.bg_promo),
+                contentDescription = null,
+                modifier = Modifier.fillMaxSize(),
+                contentScale = ContentScale.Crop
+            )
+        }
 
         Row(
             modifier = Modifier
@@ -229,14 +238,14 @@ fun PromoBanner() {
                 }
 
                 Text(
-                    text = "Buy one get",
+                    text = "Bir alana",
                     color = Color.White,
                     fontSize = 25.sp,
                     fontWeight = FontWeight.Bold
                 )
 
                 Text(
-                    text = "one FREE",
+                    text = "bir BEDAVA",
                     color = Color.White,
                     fontSize = 25.sp,
                     fontWeight = FontWeight.Bold
@@ -245,6 +254,7 @@ fun PromoBanner() {
 
             // Sağ tarafta boşluk - kahve fincanı görseli buraya gelebilir
             Spacer(modifier = Modifier.weight(0.8f))
+
         }
     }
 }

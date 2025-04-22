@@ -77,7 +77,7 @@ object AppModule {
             val products = listOf(
                 Product(name = "Macchiato", price = 150.0, description = "Sıcak İçecek", categoryId = 1, imageUrl = "https://static.vecteezy.com/system/resources/thumbnails/025/282/026/small/stock-of-mix-a-cup-coffee-latte-more-motive-top-view-foodgraphy-generative-ai-photo.jpg"),
                 Product(name = "Espresso", price = 100.0, description = "Sıcak İçecek", categoryId = 1, imageUrl = "https://l.icdbcdn.com/oh/53d6fac5-34ae-48dc-9783-79852170b41d.jpg?w=1040"),
-                Product(name = "Latte", price = 100.0, description = "Soğuk İçecek", categoryId = 2, imageUrl = "https://media.istockphoto.com/id/1144262014/photo/ice-coffee-in-glass-closeup-view.jpg?s=612x612&w=0&k=20&c=5ZU_pMKYN_9p63zD1Ivcaq4JkswsdJ5-lHI8pgv4k0A=0"),
+                Product(name = "Latte", price = 100.0, description = "Soğuk İçecek", categoryId = 2, imageUrl = "https://img.freepik.com/premium-photo/glass-iced-latte-coffee-coffee-shop_653449-992.jpg"),
                 Product(name = "Kurabiye", price = 250.0, description = "Kurabiye", categoryId = 3, imageUrl = "https://st.depositphotos.com/37930168/61608/i/450/depositphotos_616088430-stock-photo-chocolate-chip-cookies-white-bowl.jpg"),
 
 
