@@ -301,7 +301,7 @@ fun CheckoutSection(
                 onClick = onCheckout,
                 enabled = total > 0
             ) {
-                Text(text = "Checkout")
+                Text(text = "Satın Al")
             }
         }
     }

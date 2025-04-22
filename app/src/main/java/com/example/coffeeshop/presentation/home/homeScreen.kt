@@ -14,6 +14,8 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -74,7 +76,7 @@ fun HomeScreen(
                         PromoBanner()
                     }
 
-                    // Category Selection
+                    // Category Selection - Now includes Favorites
                     item {
                         CategorySelector(
                             categories = uiState.categories,
@@ -98,7 +100,9 @@ fun HomeScreen(
                                     CoffeeItem(
                                         product = product,
                                         onAddToCart = { viewModel.addToCart(product.productId) },
-                                        onItemClick = { /* Will be implemented later for navigation */ }
+                                        onItemClick = { /* Will be implemented later for navigation */ },
+                                        isFavorite = uiState.favoriteProductIds.contains(product.productId),
+                                        onFavoriteClick = { viewModel.toggleFavorite(product.productId) }
                                     )
                                 }
                             }
@@ -254,7 +258,6 @@ fun PromoBanner() {
 
             // Sağ tarafta boşluk - kahve fincanı görseli buraya gelebilir
             Spacer(modifier = Modifier.weight(0.8f))
-
         }
     }
 }
@@ -277,6 +280,13 @@ fun CategorySelector(
             text = "Tümü",
             isSelected = selectedCategoryId == -1L,
             onClick = { onCategorySelected(-1) }
+        )
+
+        // Favoriler kategorisi
+        CategoryButton(
+            text = "Favoriler",
+            isSelected = selectedCategoryId == -2L,
+            onClick = { onCategorySelected(-2) }
         )
 
         // Diğer kategoriler
@@ -317,6 +327,8 @@ fun CoffeeItem(
     product: Product,
     onAddToCart: () -> Unit,
     onItemClick: () -> Unit,
+    isFavorite: Boolean,
+    onFavoriteClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Card(
@@ -348,6 +360,25 @@ fun CoffeeItem(
                     error = painterResource(id = R.drawable.bg_image),
                     modifier = Modifier.fillMaxSize()
                 )
+
+                // Favorite Icon - Top Right
+                Box(
+                    modifier = Modifier
+                        .align(Alignment.TopEnd)
+                        .padding(8.dp)
+                        .size(32.dp)
+                        .clip(CircleShape)
+                        .background(Color.White.copy(alpha = 0.8f))
+                        .clickable(onClick = onFavoriteClick),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        imageVector = if (isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
+                        contentDescription = if (isFavorite) "Remove from favorites" else "Add to favorites",
+                        tint = if (isFavorite) Color(0xFFFF4081) else Color.Black,
+                        modifier = Modifier.size(20.dp)
+                    )
+                }
             }
 
             Column(

@@ -33,7 +33,7 @@ fun MainScreen() {
         paddingValues ->
         NavHost(navController, startDestination = "home",modifier = Modifier.padding(paddingValues)) {
             composable("home") { HomeScreen() }
-            composable("favorites") { FavoritesScreen() }
+            //composable("favorites") { FavoritesScreen() }
             composable("cart") { CartScreen() }
             composable("profile") { ProfileScreen() }
         }
@@ -49,12 +49,15 @@ fun BottomBar(navController: NavController) {
             selected = false,
             onClick = { navController.navigate("home") }
         )
+        /*
         NavigationBarItem(
             icon = { Icon(Icons.Default.Favorite, contentDescription = "Favoriler") },
             label = { Text("Favoriler") },
             selected = false,
             onClick = { navController.navigate("favorites") }
         )
+
+         */
         NavigationBarItem(
             icon = { Icon(Icons.Default.ShoppingCart, contentDescription = "Sepet") },
             label = { Text("Sepet") },
